@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EICHELCLAN // DIE OFFIZIELLE PRÄSENZ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(40, 72, 20, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(60, 30, 10, 0.1) 0%, transparent 20%);
+        }
+        
+        .disclaimer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+        
+        .disclaimer-box {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid #4CAF50;
+            max-width: 600px;
+            margin: 1rem;
+            text-align: center;
+        }
+        
+        .disclaimer-box h2 {
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+        
+        .disclaimer-text {
+            text-align: left;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .disclaimer-accept {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .disclaimer-accept:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        
+        nav {
+            background-color: rgba(10, 10, 10, 0.95);
+            padding: 0.8rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #2a5c27;
+            box-shadow: 0 2px 10px rgba(42, 92, 39, 0.3);
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        nav li {
+            margin: 0;
+        }
+        
+        nav a {
+            color: #b8b8b8;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+        
+        nav a:hover, nav a.active {
+            color: #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #4CAF50;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 80%;
+            left: 10%;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(42, 92, 39, 0.2) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .profile-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #4CAF50;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+            margin-bottom: 1.5rem;
+            animation: pulse 4s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px rgba(76, 175, 80, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(76, 175, 80, 0.8); }
+            100% { box-shadow: 0 0 20px rgba(76, 175, 80, 0.5); }
+        }
+        
+        .hero h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: #4CAF50;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .hero p {
+            font-size: 1rem;
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+            color: #b8b8b8;
+            padding: 0 1rem;
+        }
+        
+        .scrolling-text {
+            background-color: rgba(20, 20, 20, 0.8);
+            padding: 0.8rem;
+            border: 1px solid #2a5c27;
+            border-radius: 5px;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .scrolling-text-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll 25s linear infinite;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background-color: rgba(15, 15, 15, 0.7);
+            border-radius: 8px;
+            border: 1px solid #1a1a1a;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .section h2 {
+            color: #4CAF50;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #2a5c27;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.4rem;
+        }
+        
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+        
+        .member {
+            background: linear-gradient(145deg, #1a1a1a, #111);
+            padding: 1.2rem 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #2a2a2a;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .member:hover::before {
+            left: 100%;
+        }
+        
+        .member:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            border-color: #4CAF50;
+        }
+        
+        .member-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: #4CAF50;
+        }
+        
+        .member-name {
+            font-weight: bold;
+            font-size: 1rem;
+            color: #e0e0e0;
+        }
+
+        /* Stil für gesperrten Benutzer */
+        .member.banned {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .member.banned .member-name {
+            text-decoration: line-through;
+            color: #ff4444;
+        }
+
+        .member.banned:hover {
+            transform: none;
+            border-color: #2a2a2a;
+        }
+
+        .member.banned:hover::before {
+            left: -100%;
+        }
+
+        /* Visit Counter Styles */
+        .visit-counter {
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(15, 15, 15, 0.7), #1a1a1a);
+            border-radius: 10px;
+            border: 2px solid #4CAF50;
+            margin: 1rem 0;
+        }
+        
+        .counter-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4CAF50;
+            text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        }
+        
+        .counter-text {
+            font-size: 1.2rem;
+            color: #b8b8b8;
+        }
+
+        /* Share Section */
+        .share-section {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(15, 15, 15, 0.7), #1a1a1a);
+            border-radius: 15px;
+            border: 2px solid #2a5c27;
+            margin: 2rem 0;
+        }
+
+        .share-title {
+            color: #4CAF50;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .share-btn:hover {
+            background: gold;
+            color: black;
+            transform: scale(1.1);
+        }
+
+        /* Shop Styles */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .shop-item {
+            background: linear-gradient(145deg, #1a1a1a, #111);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #2a5c27;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .shop-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .shop-item:hover::before {
+            left: 100%;
+        }
+
+        .shop-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #4CAF50;
+        }
+
+        .shop-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #4CAF50;
+        }
+
+        .shop-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: gold;
+            margin: 1rem 0;
+        }
+
+        .shop-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .shop-button:hover {
+            background: gold;
+            color: black;
+            transform: scale(1.05);
+        }
+
+        /* Kauf-Formular */
+        .purchase-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .purchase-form {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid #4CAF50;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .purchase-form h3 {
+            color: #4CAF50;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #b8b8b8;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #2a5c27;
+            border-radius: 5px;
+            background: #2e2e2e;
+            color: #e0e0e0;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .purchase-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .purchase-buttons button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel {
+            background: #666;
+            color: white;
+        }
+
+        .btn-continue {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #777;
+        }
+
+        .btn-continue:hover {
+            background: #45a049;
+        }
+
+        /* Eichelwall Styles */
+        .wall-container {
+            background: #1a1208;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #5d4037;
+            position: relative;
+            font-family: 'Courier New', monospace;
+        }
+
+        .wall-input {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .wall-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #5d4037;
+            border-radius: 5px;
+            background: #2e1f0f;
+            color: #e0e0e0;
+            min-width: 150px;
+        }
+
+        .wall-submit {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .wall-messages {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .wall-message {
+            background: #2e1f0f;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border-left: 4px solid #8d6e63;
+        }
+
+        .wall-message.admin {
+            border-left-color: gold;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .wall-message .author {
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+
+        .wall-message.admin .author {
+            color: gold;
+        }
+
+        .wall-message .timestamp {
+            font-size: 0.8rem;
+            color: #8d6e63;
+            text-align: right;
+        }
+
+        .wall-limit-info {
+            text-align: center;
+            color: #8d6e63;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid #444;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .admin-panel:hover {
+            border-color: #666;
+        }
+
+        .admin-panel h4 {
+            color: #b8b8b8;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .admin-login {
+            display: none;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-login.active {
+            display: flex;
+        }
+
+        .admin-login input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background: #2e2e2e;
+            color: #e0e0e0;
+            min-width: 200px;
+        }
+
+        .admin-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-controls {
+            display: none;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-controls.active {
+            display: flex;
+        }
+
+        /* Easter Egg */
+        .easter-egg-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #4CAF50, gold);
+            color: black;
+            padding: 2rem;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+            z-index: 10000;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 50px gold;
+        }
+
+        .easter-egg-message.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .notice-board {
+            background-color: #1a1208;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #5d4037;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .notice-board::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.1"><rect width="100" height="100" fill="none" stroke="%235d4037" stroke-width="2"/></svg>');
+            pointer-events: none;
+        }
+        
+        .notice {
+            background-color: #2e1f0f;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            border-radius: 5px;
+            border-left: 4px solid #8d6e63;
+            position: relative;
+        }
+        
+        .notice:last-child {
+            margin-bottom: 0;
+        }
+        
+        .strikethrough {
+            text-decoration: line-through;
+            color: #8d6e63;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .replacement {
+            color: #d32f2f;
+            font-weight: bold;
+            margin-left: 0.8rem;
+            font-size: 1.1rem;
+        }
+        
+        .history-content {
+            background-color: rgba(20, 20, 20, 0.7);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #2a5c27;
+        }
+        
+        .history-text {
+            color: #b8b8b8;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+        
+        .history-text p {
+            margin-bottom: 1rem;
+        }
+        
+        .history-text p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .laws-list {
+            list-style-type: none;
+        }
+        
+        .law {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: rgba(30, 30, 30, 0.7);
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            transition: all 0.3s ease;
+        }
+        
+        .law:hover {
+            background-color: rgba(40, 40, 40, 0.7);
+            transform: translateX(5px);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            border-top: 1px solid #2a2a2a;
+            color: #666;
+            font-size: 0.8rem;
+        }
+        
+        /* Mobile Optimierungen */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+            }
+            
+            .hero {
+                padding: 1.5rem 0.5rem;
+            }
+            
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section {
+                padding: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .section h2 {
+                font-size: 1.2rem;
+            }
+            
+            .members-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                gap: 0.8rem;
+            }
+            
+            .member {
+                padding: 1rem 0.5rem;
+            }
+            
+            .member-icon {
+                font-size: 1.7rem;
+            }
+            
+            .member-name {
+                font-size: 0.9rem;
+            }
+            
+            nav a {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.6rem;
+            }
+            
+            .scrolling-text {
+                padding: 0.6rem;
+            }
+            
+            .scrolling-text-content {
+                font-size: 0.8rem;
+            }
+            
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .share-buttons {
+                flex-direction: column;
+            }
+            
+            .wall-input {
+                flex-direction: column;
+            }
+            
+            .purchase-form {
+                padding: 1rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Disclaimer Overlay -->
+    <div class="disclaimer-overlay" id="disclaimer">
+        <div class="disclaimer-box">
+            <h2>⚠️ EICHELCLAN DISCLAIMER ⚠️</h2>
+            <div class="disclaimer-text">
+                <p><strong>Willkommen auf der OFFIZIELLEN Eichelclan Website!</strong></p>
+                <p>🔒 <strong>Datenschutz-Hinweis:</strong><br>
+                Deine IP-Adresse wird temporär gespeichert, um unseren Besucher-Counter vor Manipulation zu schützen. Keine Sorge - wir sind geiziger als Geier und sammeln keine weiteren Daten!</p>
+                <p>🛒 <strong>Shop-Hinweis:</strong><br>
+                Der Eichelclan-Shop ist Teil unseres humorvollen Website-Konzepts. Es handelt sich um eine satirische Darstellung - keine echten Verkaufsabsichten!</p>
+                <p>🎮 <strong>Viel Spaß beim Entdecken der Clan-Geheimnisse!</strong></p>
+            </div>
+            <button class="disclaimer-accept" onclick="acceptDisclaimer()">Ich verstehe und akzeptiere</button>
+        </div>
+    </div>
+
+    <!-- Kauf-Formular Overlay -->
+    <div class="purchase-overlay" id="purchaseOverlay">
+        <div class="purchase-form" id="purchaseForm">
+            <!-- Wird dynamisch gefüllt -->
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#start" class="active">Startseite</a></li>
+            <li><a href="#mitglieder">Mitglieder</a></li>
+            <li><a href="#passiert">Das ist Passiert</a></li>
+            <li><a href="#aktuelles">Aktuelles</a></li>
+            <li><a href="#wall">Eichelwall</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#kodex">Der Kodex</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <section id="start" class="hero">
+            <img src="eichelclan.png" alt="Eichelclan Profilbild" class="profile-image">
+            <h1>EICHELCLAN</h1>
+            <p>Seit 2022 im Schatten. Im Dienst der einen Wahrheit.</p>
+            
+            <!-- Visit Counter -->
+            <div class="visit-counter">
+                <div class="counter-number" id="visitorCount">0</div>
+            </div>
+
+            <div class="scrolling-text">
+                <div class="scrolling-text-content">
+                    Schnitzer • Anne-Marie • Fotzenknecht • Friedrich Merz • FormelGooner • Kobold • Wackelzahn • Spastes • Goonen hätte gewinnen müssen , 67 67 67 67 • 
+                    Schnitzer • Anne-Marie • Fotzenknecht • Friedrich Merz • FormelGooner • Kobold • Wackelzahn • Spastes • Goonen hätte gewinnen müssen , 67 67 67 67 •
+                </div>
+            </div>
+
+            <!-- Share Section -->
+            <div class="share-section">
+                <div class="share-title">🚀 Hilf uns den Eichelbaum zu vergrößern!</div>
+                <div class="share-buttons">
+                    <button class="share-btn" onclick="shareWebsite()">📱 Teilen</button>
+                    <button class="share-btn" onclick="copyLink()">🔗 Link kopieren</button>
+                </div>
+            </div>
+        </section>
+        
+        <section id="mitglieder" class="section">
+            <h2>Mitglieder</h2>
+            <div class="members-grid">
+                <div class="member" data-member="schnitzer">
+                    <div class="member-icon">♣</div>
+                    <div class="member-name">SCHNITZER</div>
+                </div>
+                <div class="member" data-member="anne-marie">
+                    <div class="member-icon">♥</div>
+                    <div class="member-name">ANNE-MARIE</div>
+                </div>
+                <div class="member" data-member="fotzenknecht">
+                    <div class="member-icon">👑</div>
+                    <div class="member-name">FOTZENKNECHT</div>
+                </div>
+                <div class="member" data-member="friedrich-merz">
+                    <div class="member-icon">💼</div>
+                    <div class="member-name">FRIEDRICH MERZ</div>
+                </div>
+                <div class="member" data-member="formelgooner">
+                    <div class="member-icon">⚡</div>
+                    <div class="member-name">FORMELGOONER</div>
+                </div>
+                <div class="member" data-member="kobold">
+                    <div class="member-icon">🔮</div>
+                    <div class="member-name">KOBOLD</div>
+                </div>
+                <div class="member banned" data-member="wackelzahn">
+                    <div class="member-icon">⚔️</div>
+                    <div class="member-name">WACKELZAHN</div>
+                </div>
+                <div class="member" data-member="spastes">
+                    <div class="member-icon">💥</div>
+                    <div class="member-name">SPASTES</div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="passiert" class="section">
+            <h2>Das ist Passiert</h2>
+            <div class="history-content">
+                <div class="history-text">
+                    <p><strong>2024:</strong> Auf der SMV-Hütte geschah das Unfassbare - der erste Arschbohrer. Der Täter bleibt bis heute unbekannt.</p>
+                    <p>In dieser Nacht entstand auch die legendäre Zahnbürste mit dem abgebrochenen Bürstenkopf. Von da an hatte jeder seine Hände vorm Arsch - egal ob beim Reden oder wenn Schnee ins Gesicht flog.</p>
+                    <p>Nach der Hütte lief niemand mehr in der Nähe eines Eichelclan-Mitglieds ohne Schutz. Die Angst ging so lange weiter, bis sich alle zusammenschlossen und beschlossen aufzuhören.</p>
+                    <p><em>Arschbohrer kriegt jeder.</em></p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="aktuelles" class="section">
+            <h2>Aktuelles</h2>
+            <div class="notice-board">
+                <div class="notice">
+                    <span class="strikethrough">Goonparty</span>
+                    <span class="replacement">FÄLLT AUS</span>
+                </div>
+                <div class="notice">
+                    <strong>Der Verrat eines Eichelclan Mitgliedes</strong>
+                </div>
+            </div>
+
+            <!-- Versteckter Admin Panel -->
+            <div class="admin-panel" onclick="toggleAdminLogin()">
+                <h4>👑 Admin Bereich (Klicken zum Anzeigen)</h4>
+                <div class="admin-login" id="adminLogin">
+                    <input type="password" id="adminPassword" placeholder="Admin Passwort">
+                    <button class="admin-btn" onclick="adminLogin()">Login</button>
+                </div>
+                <div class="admin-controls" id="adminControls">
+                    <button class="admin-btn" onclick="resetCounter()">Counter zurücksetzen</button>
+                    <button class="admin-btn" onclick="clearMessages()">Nachrichten löschen</button>
+                </div>
+            </div>
+        </section>
+        <!-- Eichelwall -->
+        <section id="wall" class="section">
+            <h2>💬 Eichelwall</h2>
+            <div class="wall-container">
+                <div class="wall-input">
+                    <input type="text" id="wallName" placeholder="Dein Name" maxlength="20">
+                    <input type="text" id="wallMessage" placeholder="Deine Nachricht..." maxlength="200">
+                    <button class="wall-submit" onclick="postMessage()">Abschicken</button>
+                </div>
+                <div class="wall-messages" id="wallMessages">
+                    <!-- Nachrichten werden hier geladen -->
+                </div>
+                <div class="wall-limit-info" id="wallLimitInfo">
+                    Max. 3 Nachrichten pro 24h pro IP
+                </div>
+            </div>
+        </section>
+
+        <!-- Shop Section -->
+        <section id="shop" class="section">
+            <h2>🏪 Eichelclan Shop</h2>
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <div class="shop-icon">👕</div>
+                    <div class="shop-title">Eichelclan T-Shirt</div>
+                    <div class="shop-price">€29,99</div>
+                    <p>Offizielles Clan-Shirt mit geheimem Eichel-Code</p>
+                    <button class="shop-button" onclick="startPurchase('Eichelclan T-Shirt', 29.99)">Jetzt Kaufen</button>
+                </div>
+                <div class="shop-item">
+                    <div class="shop-icon">🛡️</div>
+                    <div class="shop-title">Anti-Arschbohrer Hose</div>
+                    <div class="shop-price">€49,99</div>
+                    <p>Spezialhose mit integriertem Arschbohrer-Schutz</p>
+                    <button class="shop-button" onclick="startPurchase('Anti-Arschbohrer Hose', 49.99)">Jetzt Kaufen</button>
+                </div>
+                <div class="shop-item">
+                    <div class="shop-icon">🌰</div>
+                    <div class="shop-title">Eichel-Energie-Drink</div>
+                    <div class="shop-price">€4,99</div>
+                    <p>Limitierte Edition - Macht dich goon-bereit!</p>
+                    <button class="shop-button" onclick="startPurchase('Eichel-Energie-Drink', 4.99)">Jetzt Kaufen</button>
+                </div>
+                <div class="shop-item">
+                    <div class="shop-icon">👑</div>
+                    <div class="shop-title">Clan-Mitgliedschaft</div>
+                    <div class="shop-price">€67,00</div>
+                    <p>Offizielle Mitgliedschaft inkl. Geheimhandbuch</p>
+                    <button class="shop-button" onclick="startPurchase('Clan-Mitgliedschaft', 67.00)">Jetzt Kaufen</button>
+                </div>
+            </div>
+        </section>
+        
+        <section id="kodex" class="section">
+            <h2>Der Kodex</h2>
+            <ul class="laws-list">
+                <li class="law">Die heilige Eichel ist unser Gott.</li>
+                <li class="law">Die Würde der Eichel ist unantastbar.</li>
+                <li class="law">Die Heilige Eichel.</li>
+                <li class="law">Die Eichelreligion ist unser Glaube.</li>
+                <li class="law">Fotzenknecht ist kein Schimpfwort. Es ist ein Nickname.</li>
+                <li class="law">Was im Clan passiert, bleibt im Clan.</li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- Easter Egg Message -->
+    <div class="easter-egg-message" id="easterEgg">
+        🎉 EICHEL-CLUB ENTDECKT! 🎉<br>
+        Du hast das geheime Easter Egg gefunden!<br>
+        Willkommen im inneren Kreis!
+    </div>
+    
+    <footer>
+        <p>EICHELCLAN © 2024 - Alle Rechte vorbehalten. Oder auch nicht.</p>
+    </footer>
+
+    <script>
+        // API Base URL - Automatisch für PythonAnywhere
+        const API_BASE = window.location.origin + '/api';
+
+        // Disclaimer
+        function acceptDisclaimer() {
+            document.getElementById('disclaimer').style.display = 'none';
+            // Visit Counter laden nach Disclaimer
+            loadVisitCount();
+            loadMessages();
+        }
+
+        // Visit Counter
+        async function loadVisitCount() {
+            try {
+                const response = await fetch(API_BASE + '/visit');
+                const data = await response.json();
+                document.getElementById('visitorCount').textContent = data.count;
+            } catch (error) {
+                console.error('Fehler beim Laden des Counters:', error);
+                document.getElementById('visitorCount').textContent = '?';
+            }
+        }
+
+        // Share Functions
+        function shareWebsite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Eichelclan - Die offizielle Website',
+                    text: 'Entdecke den legendären Eichelclan! 🎯',
+                    url: window.location.href
+                });
+            } else {
+                copyLink();
+            }
+        }
+
+        function copyLink() {
+            const link = window.location.href;
+            navigator.clipboard.writeText(link);
+            showEasterEgg('🔗 Link kopiert!<br>' + link);
+        }
+
+        // Eichelwall
+        async function loadMessages() {
+            try {
+                const response = await fetch(API_BASE + '/messages');
+                const messages = await response.json();
+                const container = document.getElementById('wallMessages');
+                container.innerHTML = '';
+                
+                if (messages.length === 0) {
+                    container.innerHTML = '<p>Noch keine Nachrichten. Sei der Erste!</p>';
+                    return;
+                }
+                
+                messages.forEach(msg => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = msg.isAdmin ? 'wall-message admin' : 'wall-message';
+                    messageDiv.innerHTML = `
+                        <div class="author">${escapeHtml(msg.name)} ${msg.isAdmin ? '👑' : ''}</div>
+                        <div class="text">${escapeHtml(msg.message)}</div>
+                        <div class="timestamp">${msg.timestamp}</div>
+                    `;
+                    container.appendChild(messageDiv);
+                });
+            } catch (error) {
+                console.error('Fehler beim Laden der Nachrichten:', error);
+            }
+        }
+
+        async function postMessage() {
+            const name = document.getElementById('wallName').value.trim();
+            const message = document.getElementById('wallMessage').value.trim();
+            
+            if (!name || !message) {
+                showEasterEgg('❌ Bitte Name und Nachricht eingeben!');
+                return;
+            }
+
+            try {
+                const requestBody = { name, message };
+                if (adminToken) {
+                    requestBody.adminToken = adminToken;
+                }
+
+                const response = await fetch(API_BASE + '/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('wallMessage').value = '';
+                    loadMessages();
+                    showEasterEgg('✅ Nachricht gepostet!');
+                } else {
+                    showEasterEgg('❌ ' + result.error);
+                }
+            } catch (error) {
+                console.error('Fehler beim Posten:', error);
+                showEasterEgg('❌ Netzwerkfehler!');
+            }
+        }
+
+        // Shop Kaufprozess
+        let currentPurchaseItem = null;
+        let currentPurchasePrice = null;
+
+        function startPurchase(itemName, price) {
+            currentPurchaseItem = itemName;
+            currentPurchasePrice = price;
+            
+            const form = document.getElementById('purchaseForm');
+            form.innerHTML = `
+                <h3>${itemName} kaufen</h3>
+                <div class="form-group">
+                    <label for="quantity">Menge:</label>
+                    <select id="quantity">
+                        <option value="1">1 Stück</option>
+                        <option value="2">2 Stück</option>
+                        <option value="3">3 Stück</option>
+                        <option value="5">5 Stück</option>
+                        <option value="10">10 Stück</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="street">Straße:</label>
+                    <input type="text" id="street" placeholder="Musterstraße">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="number">Hausnummer:</label>
+                        <input type="text" id="number" placeholder="123">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Ort:</label>
+                        <input type="text" id="city" placeholder="Musterstadt">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="creditcard">Kreditkartennummer:</label>
+                    <input type="text" id="creditcard" placeholder="1234 5678 9012 3456">
+                </div>
+                <div class="purchase-buttons">
+                    <button class="btn-cancel" onclick="cancelPurchase()">Abbrechen</button>
+                    <button class="btn-continue" onclick="continuePurchase()">Weiter</button>
+                </div>
+            `;
+            
+            document.getElementById('purchaseOverlay').style.display = 'flex';
+        }
+
+        function cancelPurchase() {
+            document.getElementById('purchaseOverlay').style.display = 'none';
+            currentPurchaseItem = null;
+            currentPurchasePrice = null;
+        }
+
+        function continuePurchase() {
+            const quantity = document.getElementById('quantity').value;
+            const street = document.getElementById('street').value;
+            const number = document.getElementById('number').value;
+            const city = document.getElementById('city').value;
+            const creditcard = document.getElementById('creditcard').value;
+            
+            if (!street || !number || !city || !creditcard) {
+                showEasterEgg('❌ Bitte fülle alle Felder aus!');
+                return;
+            }
+
+            document.getElementById('purchaseOverlay').style.display = 'none';
+            
+            showEasterEgg(`🎉 AUFDECKUNG!<br><br>
+            Diese Sachen existieren nicht! 😂<br>
+            Deine Daten wurden in keiner Weise gespeichert!<br><br>
+            Danke fürs Mitspielen! 🎯`);
+            
+            currentPurchaseItem = null;
+            currentPurchasePrice = null;
+        }
+
+        // Admin Functions
+        let adminToken = null;
+
+        function toggleAdminLogin() {
+            document.getElementById('adminLogin').classList.toggle('active');
+        }
+
+        async function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            
+            try {
+                const response = await fetch(API_BASE + '/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    adminToken = result.token;
+                    document.getElementById('adminControls').classList.add('active');
+                    document.getElementById('adminPassword').value = '';
+                    showEasterEgg('✅ Admin Login erfolgreich!');
+                } else {
+                    showEasterEgg('❌ Falsches Passwort!');
+                }
+            } catch (error) {
+                console.error('Fehler beim Login:', error);
+                showEasterEgg('❌ Netzwerkfehler!');
+            }
+        }
+
+        async function resetCounter() {
+            if (!adminToken) {
+                showEasterEgg('❌ Bitte zuerst einloggen!');
+                return;
+            }
+
+            try {
+                const response = await fetch(API_BASE + '/admin/reset-counter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: adminToken })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('visitorCount').textContent = result.newCount;
+                    showEasterEgg('✅ Counter zurückgesetzt!');
+                }
+            } catch (error) {
+                console.error('Fehler beim Zurücksetzen:', error);
+                showEasterEgg('❌ Netzwerkfehler!');
+            }
+        }
+
+        async function clearMessages() {
+            if (!adminToken) {
+                showEasterEgg('❌ Bitte zuerst einloggen!');
+                return;
+            }
+
+            try {
+                const response = await fetch(API_BASE + '/admin/clear-messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: adminToken })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    loadMessages();
+                    showEasterEgg('✅ Nachrichten gelöscht!');
+                }
+            } catch (error) {
+                console.error('Fehler beim Löschen:', error);
+                showEasterEgg('❌ Netzwerkfehler!');
+            }
+        }
+
+        // Easter Egg System
+        function showEasterEgg(message) {
+            const egg = document.getElementById('easterEgg');
+            egg.innerHTML = message;
+            egg.classList.add('show');
+            setTimeout(() => {
+                egg.classList.remove('show');
+            }, 4000);
+        }
+
+        // Geheime Easter Eggs
+        let konamiCode = [];
+        const secretCode = ['6','7','6','7','6','7','6','7'];
+        
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.key);
+            if (konamiCode.length > secretCode.length) {
+                konamiCode.shift();
+            }
+            if (konamiCode.join('') === secretCode.join('')) {
+                showEasterEgg('🎮 GEHEIMCODE AKTIVIERT!<br>Goonen hätten gewinnen müssen! 67 67 67 67');
+                konamiCode = [];
+            }
+        });
+
+        // Mitglieder Info - ANGEPASST mit den neuen Informationen
+        const memberInfo = {
+            'schnitzer': 'Schnitzelbrötchen-Gründer vom Eichelclan',
+            'anne-marie': 'Die ganze Zeit am Goonen', 
+            'fotzenknecht': 'Ersteller der Website',
+            'friedrich-merz': 'Das Mitglied was sich als Friedrich Merz entpumpte und dafür gesorgt hatte das Goonen nicht gewinnt',
+            'formelgooner': 'Er goont am Liebsten in Physik und Mathe',
+            'kobold': 'Der kleinste aus dem Eichelclan trotzdem einer der Stärksten',
+            'wackelzahn': 'Wackelzahn hat seine eigene Zahnpasta GmbH',
+            'spastes': 'Der typ mit einer topffrisur'
+        };
+
+        document.querySelectorAll('.member').forEach(member => {
+            member.addEventListener('click', function() {
+                const memberId = this.getAttribute('data-member');
+                
+                // Spezielle Behandlung für Wackelzahn (gesperrter Benutzer)
+                if (memberId === 'wackelzahn') {
+                    showEasterEgg('🚫 GESPERRTER BENUTZER<br>Dieser Benutzer wurde gesperrt.');
+                    return;
+                }
+                
+                const info = memberInfo[memberId];
+                showEasterEgg(`👤 ${this.querySelector('.member-name').textContent}<br>${info}`);
+            });
+        });
+
+        // Hilfsfunktion
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelectorAll('nav a').forEach(a => {
+                    a.classList.remove('active');
+                });
+                
+                this.classList.add('active');
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        window.addEventListener('scroll', function() {
+            let current = '';
+            const sections = document.querySelectorAll('.section, .hero');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 80) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            document.querySelectorAll('nav a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href') === `#${current}`) {
+                    a.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
