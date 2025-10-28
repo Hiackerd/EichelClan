@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EichelCommunity - Online Plattform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        /* CSS bleibt gleich wie vorher, aber erweitert um Admin-Panel */
+        .admin-panel {
+            background: #1a1a1a;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #2a5c27;
+            margin-top: 1rem;
+        }
+        
+        .admin-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .admin-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .admin-table th, .admin-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #2a5c27;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="auth-screen" id="authScreen">
+        <div class="auth-container">
+            <h2>EichelCommunity Login</h2>
+            <div class="form-group">
+                <input type="text" id="loginUsername" placeholder="Benutzername" value="John">
+            </div>
+            <div class="form-group">
+                <input type="password" id="loginPassword" placeholder="Passwort" value="2456973849">
+            </div>
+            <button class="auth-btn" onclick="login()">Einloggen</button>
+            <p style="margin-top: 1rem;">Test Account: John / 2456973849 (Admin)</p>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
+        <nav style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div>
+                <button onclick="showSection('chat')">Chat</button>
+                <button onclick="showSection('shop')">Shop</button>
+                <button onclick="showSection('profile')">Profil</button>
+                <button onclick="showSection('admin')" id="adminBtn" style="display: none;">Admin</button>
+            </div>
+            <div>
+                <span id="userInfo">Eingeloggt als: </span>
+                <span id="ecBalance" style="margin: 0 1rem;">EC: 0</span>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Chat Section -->
+        <div id="chatSection" class="section">
+            <h2>EichelCommunity Live Chat</h2>
+            <div class="chat-container">
+                <div class="users-list" id="usersList">
+                    <h3>Online User</h3>
+                    <div id="onlineUsers"></div>
+                </div>
+                <div class="chat-area">
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-input">
+                        <input type="text" id="messageInput" placeholder="Schreibe eine Nachricht..." maxlength="500">
+                        <button class="send-btn" onclick="sendMessage()">Senden</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shop Section -->
+        <div id="shopSection" class="section" style="display: none;">
+            <h2>EichelShop</h2>
+            <div class="shop-categories">
+                <button class="category-btn active" onclick="showShopCategory('tags')">Titel-Tags</button>
+                <button class="category-btn" onclick="showShopCategory('vip')">VIP-Ränge</button>
+            </div>
+            <div id="shopItems"></div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profileSection" class="section" style="display: none;">
+            <h2>Mein Profil</h2>
+            <div>
+                <h3>Inventar</h3>
+                <div id="inventory"></div>
+            </div>
+        </div>
+
+        <!-- Admin Section -->
+        <div id="adminSection" class="section" style="display: none;">
+            <h2>Admin Panel</h2>
+            <div class="admin-panel">
+                <div class="admin-controls">
+                    <button class="admin-btn" onclick="loadAllUsers()">Benutzer verwalten</button>
+                    <button class="admin-btn" onclick="showGiveEC()">EC geben</button>
+                    <button class="admin-btn" onclick="showBanUser()">Benutzer bannen</button>
+                </div>
+                <div id="adminContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000'; // Für Entwicklung
+        
+        let socket = null;
+        let currentUser = null;
+        let shopItems = null;
+
+        // WebSocket Verbindung
+        function connectWebSocket() {
+            socket = io(API_URL);
+            
+            socket.on('new_message', function(data) {
+                addMessageToChat(data.username, data.message, data.timestamp);
+            });
+        }
+
+        // Login
+        async function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                const response = await fetch(API_URL + '/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, password})
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentUser = data.user;
+                    document.getElementById('authScreen').style.display = 'none';
+                    document.getElementById('appContainer').style.display = 'block';
+                    document.getElementById('userInfo').textContent = `Eingeloggt als: ${currentUser.username}`;
+                    document.getElementById('ecBalance').textContent = `EC: ${currentUser.ec}`;
+                    
+                    if (currentUser.role === 'admin' || currentUser.role === 'mod') {
+                        document.getElementById('adminBtn').style.display = 'inline-block';
+                    }
+                    
+                    connectWebSocket();
+                    loadMessages();
+                    loadOnlineUsers();
+                    loadShopItems();
+                    loadInventory();
+                    
+                    setInterval(loadOnlineUsers, 30000);
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert('Verbindungsfehler zum Server');
+            }
+        }
+
+        // Nachrichten laden
+        async function loadMessages() {
+            try {
+                const response = await fetch(API_URL + '/messages');
+                const messages = await response.json();
+                
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML = '';
+                
+                messages.forEach(msg => {
+                    addMessageToChat(msg.username, msg.message, msg.timestamp);
+                });
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+
+        // Nachricht senden
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message === '' || !currentUser) return;
+            
+            try {
+                const response = await fetch(API_URL + '/send', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        username: currentUser.username,
+                        message: message
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    input.value = '';
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error sending message:', error);
+            }
+        }
+
+        // Shop Items laden
+        async function loadShopItems() {
+            try {
+                const response = await fetch(API_URL + '/shop/items');
+                shopItems = await response.json();
+                showShopCategory('tags');
+            } catch (error) {
+                console.error('Error loading shop items:', error);
+            }
+        }
+
+        // Item kaufen
+        async function buyItem(itemId, itemType) {
+            try {
+                const response = await fetch(API_URL + '/shop/buy', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        username: currentUser.username,
+                        item_id: itemId,
+                        item_type: itemType
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(data.message);
+                    currentUser.ec = data.new_ec;
+                    document.getElementById('ecBalance').textContent = `EC: ${currentUser.ec}`;
+                    loadInventory();
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error buying item:', error);
+            }
+        }
+
+        // Inventar laden
+        async function loadInventory() {
+            try {
+                const response = await fetch(API_URL + '/user/inventory?username=' + currentUser.username);
+                const inventory = await response.json();
+                
+                const inventoryDiv = document.getElementById('inventory');
+                inventoryDiv.innerHTML = '<p>Deine gekauften Items:</p>';
+                
+                inventory.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'inventory-item';
+                    itemDiv.textContent = `Item: ${item.id} (${item.type})`;
+                    inventoryDiv.appendChild(itemDiv);
+                });
+            } catch (error) {
+                console.error('Error loading inventory:', error);
+            }
+        }
+
+        // Admin: Alle Benutzer laden
+        async function loadAllUsers() {
+            try {
+                const response = await fetch(API_URL + '/admin/users');
+                const users = await response.json();
+                
+                const adminContent = document.getElementById('adminContent');
+                let html = '<h3>Alle Benutzer</h3><table class="admin-table"><tr><th>Username</th><th>Rolle</th><th>EC</th><th>Status</th><th>Aktionen</th></tr>';
+                
+                users.forEach(user => {
+                    html += `<tr>
+                        <td>${user.username}</td>
+                        <td>${user.role}</td>
+                        <td>${user.ec}</td>
+                        <td>${user.online ? 'Online' : 'Offline'} ${user.banned ? '[GEBANNT]' : ''}</td>
+                        <td>
+                            <button onclick="banUserPrompt('${user.username}')">Bannen</button>
+                            <button onclick="giveECPrompt('${user.username}')">EC geben</button>
+                            ${user.role !== 'admin' ? `<button onclick="promoteUser('${user.username}', 'mod')">Zum Mod</button>` : ''}
+                        </td>
+                    </tr>`;
+                });
+                
+                html += '</table>';
+                adminContent.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        // Benutzer bannen
+        async function banUserPrompt(username) {
+            const duration = prompt('Ban-Dauer in Stunden (0 für permanent):');
+            const reason = prompt('Ban-Grund:');
+            
+            if (duration !== null && reason !== null) {
+                try {
+                    const response = await fetch(API_URL + '/admin/ban', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            admin_user: currentUser.username,
+                            target_user: username,
+                            duration: duration,
+                            reason: reason
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    alert(data.success ? 'Benutzer gebannt!' : data.message);
+                } catch (error) {
+                    console.error('Error banning user:', error);
+                }
+            }
+        }
+
+        // EC geben
+        async function giveECPrompt(username) {
+            const amount = prompt('EC Menge:');
+            
+            if (amount !== null) {
+                try {
+                    const response = await fetch(API_URL + '/admin/give_ec', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            admin_user: currentUser.username,
+                            target_user: username,
+                            amount: amount
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    alert(data.success ? 'EC gegeben!' : data.message);
+                } catch (error) {
+                    console.error('Error giving EC:', error);
+                }
+            }
+        }
+
+        // Hilfsfunktionen für Navigation etc.
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(sec => {
+                sec.style.display = 'none';
+            });
+            document.getElementById(section + 'Section').style.display = 'block';
+        }
+
+        function showShopCategory(category) {
+            if (!shopItems) return;
+            
+            const shopItemsDiv = document.getElementById('shopItems');
+            let html = '<div class="shop-items">';
+            
+            shopItems[category].forEach(item => {
+                html += `<div class="shop-item">
+                    <h3>${item.name}</h3>
+                    <div class="item-price">${item.price} EC</div>
+                    <button onclick="buyItem('${item.id}', '${category}')">Kaufen</button>
+                </div>`;
+            });
+            
+            html += '</div>';
+            shopItemsDiv.innerHTML = html;
+        }
+
+        // Rest der Hilfsfunktionen (addMessageToChat, loadOnlineUsers, etc.)
+        function addMessageToChat(username, message, timestamp) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            
+            messageDiv.className = `message ${username === currentUser.username ? 'own' : 'other'}`;
+            messageDiv.innerHTML = `
+                <div class="message-sender">${username}</div>
+                <div class="message-text">${message}</div>
+                <div class="message-time">${timestamp}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        async function loadOnlineUsers() {
+            try {
+                const response = await fetch(API_URL + '/online_users');
+                const onlineUsers = await response.json();
+                
+                const onlineUsersDiv = document.getElementById('onlineUsers');
+                onlineUsersDiv.innerHTML = '';
+                
+                onlineUsers.forEach(username => {
+                    const userDiv = document.createElement('div');
+                    userDiv.className = 'user-item';
+                    userDiv.innerHTML = `<span class="user-status online"></span>${username}`;
+                    onlineUsersDiv.appendChild(userDiv);
+                });
+            } catch (error) {
+                console.error('Error loading online users:', error);
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('appContainer').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'flex';
+            
+            if (socket) {
+                socket.disconnect();
+            }
+        }
+
+        // Event Listener
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Initial auf Chat zeigen
+        showSection('chat');
+    </script>
+</body>
+</html>
